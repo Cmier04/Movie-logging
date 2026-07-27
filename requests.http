@@ -1,5 +1,0 @@
-### TMDB API
-GET https://api.themoviedb.org/3/movie/557?api_key=a6a49b8e945a3aa76a441b7d0e593422
-
-### MailboxLayer API
-GET https://apilayer.net/api/check?access_key=1f345e065e119377f28b64df80799c5a&email=support@apilayer.com
