@@ -8,7 +8,7 @@
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+  --accent-border: #aa3bff80;
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -61,7 +61,7 @@
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(230, 230, 250, 1);
   position: sticky;
-  background-color: lightblue;
+  background-color: #add8e6;
 }
 
 .navbar-logo a {

@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import React from 'react';
+import { Link, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Navbar() {
@@ -8,6 +7,10 @@ export default function Navbar() {
         loginWithRedirect,
         logout,
     } = useAuth0();
+
+    const location = useLocation();
+    // Check if user is on homePage
+    const isHome = location.pathname === "/"
 
     return (
         <nav className="navbar">
@@ -29,10 +32,19 @@ export default function Navbar() {
             </ul>
 
             <div className="auth-buttons">
+                {/* Show Login and Signup when user is NOT on HomePage */}
+                {!isHome && !isAuthenticated && (
+                    <>
+                        <button onClick={() => loginWithRedirect()}>Log In</button>
+                        <button onClick={() => loginWithRedirect({
+                            authorizationParams: { screen_hint: "signup",},})}>
+                            Sign Up
+                        </button>
+                    </>
+                )}
+
                 {isAuthenticated && (
-                    <button
-                        onClick={() =>
-                        logout({
+                    <button onClick={() => logout({
                             logoutParams: {
                             returnTo: window.location.origin,
                             },
