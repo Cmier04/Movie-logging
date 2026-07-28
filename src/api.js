@@ -187,3 +187,9 @@ export async function getTopMoviesByGenre(genreId) {
 
     return normalizeTmdbResults(data.results || []);
 }
+
+export async function getTmdbMovieCredits(movieId) {
+    const url = `${tmdbBaseUrl}/movie/${movieId}/credits?language=en-US`;
+
+    return await fetchTmdbJson(url);
+}

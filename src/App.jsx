@@ -5,6 +5,7 @@ import AboutPage from "./pages/AboutPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import SearchPage from "./pages/SearchPage";
+import DetailsPage from "./pages/DetailsPage";
 
 export default function App() {
   console.log("can see app.jsx");
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/details" element={<DetailsPage/>} />
         </Routes>
       </Layout>
     </BrowserRouter>
