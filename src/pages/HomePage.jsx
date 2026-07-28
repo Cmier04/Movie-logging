@@ -167,19 +167,8 @@ export default function HomePage() {
 
             {!isAuthenticated && (
                 <div className="auth-btns">
-                    <button onClick={() => loginWithRedirect()} className="login-btn">
-                        Log In
-                    </button>
-
-                    <button onClick={()=> loginWithRedirect({
-                        authorizationParams: {
-                            screen_hint: "signup",
-                        },
-                    })
-                }
-                className="signup-btn">
-                    Sign Up
-                </button>
+                    <Link to="/login" className="login-btn">Log In</Link>
+                    <Link to="/signup" className="signup-btn">Sign Up</Link>
                 </div>
             )}
 
