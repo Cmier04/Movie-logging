@@ -13,6 +13,9 @@ const tmdbPopularUrl = `${tmdbBaseUrl}/movie/popular`;
 export function getTmdbApiKey() {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
+    console.log("TMDB API key:", apiKey);
+    console.log("TMDB API key length:", apiKey?.length);
+    
     if (!apiKey || apiKey === "YOUR_TMDB_API_KEY") {
         return "";
     }
