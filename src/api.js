@@ -44,28 +44,19 @@ function normalizeTmdbResults(results) {
     });
 }
 
-export async function fetchTmdbJson(endpoint) {
+export async function fetchTmdbJson(url) {
     const apiKey = getTmdbApiKey();
 
-    const separator = endpoint.includes("?") ? "&" : "?";
+    if (!apiKey) {
+        throw new Error("Missing TMDB API key.");
+    }
 
-    const url =
-        `https://api.themoviedb.org/3${endpoint}` +
-        `${separator}api_key=${encodeURIComponent(apiKey)}`;
-
-    const response = await fetch(url);
+    const separator = url.includes("?") ? "&" : "?";
+    const response = await fetch(`${url}${separator}api_key=${apiKey}`);
     const data = await response.json();
 
-    console.log("TMDB endpoint:", endpoint);
-    console.log("TMDB status:", response.status);
-    console.log("TMDB response:", data);
-
     if (!response.ok) {
-        throw new Error(
-            `TMDB request failed (${response.status}): ${
-                data.status_message || response.statusText
-            }`
-        );
+        throw new Error(`TMDB dashboard request failed (${response.status}): ${data.status_message || "Unknown error"}.`);
     }
 
     return data;
