@@ -142,7 +142,7 @@ export async function fetchTmdbMovieDetails(movieId) {
 export async function getMovieRecommendations(movieId) {
     const data = await fetchTmdbJson(`${tmdbBaseUrl}/movie/${movieId}/recommendations?language=en-US&page=1`);
 
-    return data.results;
+    return normalizeTmdbResults(data.results || []);
 
 }
 

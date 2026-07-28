@@ -31,7 +31,6 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="navbar-logo">
                 <a href="/">
-                    The Movie Log
                     <img src="/src/assets/logo.png" alt="Movie Logger Logo" />
                 </a>
             </div>
@@ -39,6 +38,7 @@ export default function Navbar() {
                 <li>
                     <Link to="/">Home </Link>
                     <Link to="/about">About </Link>
+                    <Link to="/search">Search</Link>
                     {isAuthenticated && (
                         <li>
                             <Link to="/profile">Profile</Link>
