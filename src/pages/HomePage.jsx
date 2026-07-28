@@ -173,7 +173,7 @@ export default function HomePage() {
 
                     <button onClick={()=> loginWithRedirect({
                         authorizationParams: {
-                            screen_hint: "Sign Up",
+                            screen_hint: "signup",
                         },
                     })
                 }

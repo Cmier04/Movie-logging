@@ -53,12 +53,16 @@ export async function fetchTmdbJson(url) {
 
     const separator = url.includes("?") ? "&" : "?";
     const response = await fetch(`${url}${separator}api_key=${apiKey}`);
+    const data = await response.json();
+
+    console.log("TMDB status:", response.status);
+    console.log("TMDB response:", data);
 
     if (!response.ok) {
-        throw new Error("TMDB dashboard request failed.");
+        throw new Error(`TMDB dashboard request failed (${response.status}): ${data.status_message || "Unknown error"}.`);
     }
 
-    return response.json();
+    return data;
 }
 
 export async function getRandomMovies() {
