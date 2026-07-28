@@ -128,7 +128,7 @@ export async function getMovieRecommendations(movieId) {
 }
 
 export async function fetchTmdbMovieGenres() {
-    const data = await fetchTmdbJson("/genre/movie/list");
+    const data = await fetchTmdbJson(`${tmdbGenreUrl}`);
     return data.genres || [];
 }
 
