@@ -31,7 +31,7 @@ export default function Navbar() {
         <nav className="navbar">
             <div className="navbar-logo">
                 <a href="/">
-                    <img src="/src/assets/logo.png" alt="Movie Logger Logo" />
+                    <img src="/logo.png" alt="Movie Logger Logo" />
                 </a>
             </div>
             <ul className="navbar-links">
