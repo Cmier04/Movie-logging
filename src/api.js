@@ -13,9 +13,6 @@ const tmdbPopularUrl = `${tmdbBaseUrl}/movie/popular`;
 export function getTmdbApiKey() {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
-    console.log("TMDB API key:", apiKey);
-    console.log("TMDB API key length:", apiKey?.length);
-    
     if (!apiKey || apiKey === "YOUR_TMDB_API_KEY") {
         return "";
     }
@@ -47,22 +44,28 @@ function normalizeTmdbResults(results) {
     });
 }
 
-export async function fetchTmdbJson(url) {
+export async function fetchTmdbJson(endpoint) {
     const apiKey = getTmdbApiKey();
 
-    if (!apiKey) {
-        throw new Error("Missing TMDB API key.");
-    }
+    const separator = endpoint.includes("?") ? "&" : "?";
 
-    const separator = url.includes("?") ? "&" : "?";
-    const response = await fetch(`${url}${separator}api_key=${apiKey}`);
+    const url =
+        `https://api.themoviedb.org/3${endpoint}` +
+        `${separator}api_key=${encodeURIComponent(apiKey)}`;
+
+    const response = await fetch(url);
     const data = await response.json();
 
+    console.log("TMDB endpoint:", endpoint);
     console.log("TMDB status:", response.status);
     console.log("TMDB response:", data);
 
     if (!response.ok) {
-        throw new Error(`TMDB dashboard request failed (${response.status}): ${data.status_message || "Unknown error"}.`);
+        throw new Error(
+            `TMDB request failed (${response.status}): ${
+                data.status_message || response.statusText
+            }`
+        );
     }
 
     return data;
