@@ -6,7 +6,8 @@ import {
     Pie,
     Tooltip,
     Legend,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Cell
 } from "recharts";
 
 import { getTopRatedGenreData } from "../api.js";
@@ -17,6 +18,27 @@ export default function ProfilePage() {
     const [genreData, setGenreData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    // Pie Chart Colors
+    const genreColors = {
+        Action: "#e63946",
+        Adventure: "#f4a261",
+        Animation: "#2a9d8f",
+        Comedy: "#f9c74f",
+        Crime: "#6d597a",
+        Documentary: "#457b9d",
+        Drama: "#9b5de5",
+        Family: "#90be6d",
+        Fantasy: "#577590",
+        Horror: "#720026",
+        Music: "#43aa8b",
+        Mystery: "#4d4dff",
+        Romance: "#ff6b9d",
+        "Science Fiction": "#00b4d8",
+        Thriller: "#f3722c",
+        War: "#8d6e63",
+        Western: "#bc6c25"
+    };
 
     useEffect(() => {
         async function loadGenreData() {
@@ -125,8 +147,12 @@ export default function ProfilePage() {
                                     cx="50%"
                                     cy="50%"
                                     outerRadius={140}
-                                    label
-                                />
+                                    label >
+                                        
+                                    {genreData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={genreColors[entry.name] || "#99999"} />
+                                    ))}
+                                </Pie>
 
                                 <Tooltip />
 

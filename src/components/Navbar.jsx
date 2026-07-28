@@ -1,5 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
 
 export default function Navbar() {
     const {
@@ -8,14 +9,29 @@ export default function Navbar() {
         logout,
     } = useAuth0();
 
+    // Search capabilities
+    const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
     const location = useLocation();
     // Check if user is on homePage
     const isHome = location.pathname === "/"
+
+    function handleSearch(e) {
+        e.preventDefault();
+
+        const trimmedQuery = query.trim();
+        
+        if (!trimmedQuery) return;
+
+        navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
+    }
 
     return (
         <nav className="navbar">
             <div className="navbar-logo">
                 <a href="/">
+                    The Movie Log
                     <img src="/src/assets/logo.png" alt="Movie Logger Logo" />
                 </a>
             </div>
@@ -55,6 +71,18 @@ export default function Navbar() {
                     </button>
                 )}
             </div>
+
+            {/* Search Bar */}
+            <form onSubmit={handleSearch}>
+                <input
+                    type="search"
+                    placeholder="Search movies..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+
+                <button type="submit">Search</button>
+            </form>
         </nav>
     );
 }

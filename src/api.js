@@ -9,6 +9,7 @@ const tmdbDiscoverUrl = `${tmdbBaseUrl}/discover/movie"`;
 const tmdbPosterBaseUrl = "https://image.tmdb.org/t/p/w342";
 const tmdbTopRatedUrl = `${tmdbBaseUrl}/movie/top_rated`;
 const tmdbPopularUrl = `${tmdbBaseUrl}/movie/popular`;
+const tmdbNowPlayingUrl = `${tmdbBaseUrl}/movie/now_playing?language=en-US&region=US`;
 
 export function getTmdbApiKey() {
     const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -62,6 +63,21 @@ export async function fetchTmdbJson(url) {
     return data;
 }
 
+export const movieGenres = [
+    { name: "Action", id: 28 },
+    { name: "Adventure", id: 12 },
+    { name: "Animation", id: 16 },
+    { name: "Comedy", id: 35 },
+    { name: "Crime", id: 80 },
+    { name: "Drama", id: 18 },
+    { name: "Fantasy", id: 14 },
+    { name: "Horror", id: 27 },
+    { name: "Mystery", id: 9648 },
+    { name: "Romance", id: 10749 },
+    { name: "Science Fiction", id: 878 },
+    { name: "Thriller", id: 53 }
+];
+
 export async function getRandomMovies() {
     const randomPage = Math.floor(Math.random() * 10) + 1;
 
@@ -111,6 +127,12 @@ export async function searchMedia(query, selectedSource) {
     };
 }
 
+export async function getNowPlayingMovies() {
+    const data = await fetchTmdbJson(`${tmdbNowPlayingUrl}`);
+
+    return normalizeTmdbResults(data.results || []);
+}
+
 export async function fetchTmdbMovieDetails(movieId) {
     const data = await fetchTmdbJson(`${tmdbBaseUrl}/movie/${movieId}?language=en-US`);
 
@@ -153,4 +175,15 @@ export async function getTopRatedGenreData() {
     return Object.entries(genreCounts).map(([name, value]) => ({
         name, value
     })).sort((a, b) => b.value - a.value).slice(0, 10);
+}
+
+export async function getTopMoviesByGenre(genreId) {
+    const data = await fetchTmdbJson(`${tmdbBaseUrl}/discover/movie?` +
+        `language=en-US` +
+        `&with_genres=${genreId}` +
+        `&sort_by=vote_average.desc` +
+        `&vote_count.gte=200`
+    );
+
+    return normalizeTmdbResults(data.results || []);
 }
