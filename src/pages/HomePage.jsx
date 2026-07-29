@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import "../css/MovieCard.css";
+import "../css/index.css";
+import MovieCard from "../components/MovieCard.jsx";
 import {
         fetchTmdbJson,
         getRandomMovies,
@@ -160,29 +163,37 @@ export default function HomePage() {
 
     return (
         <main className="home-page">
-            <h1>Welcome to The Movie Logger</h1>
-            <p>
-                Track your favorite movies, discover new fils, and find your next movie to watch.
-            </p>
+            <a href="/">
+                    <img src="/logo.png" alt="Movie Logger Logo" className="home-logo" />
+            </a>
+            <section className="hero-section">
+                
+                <h1>Welcome to The Movie Log</h1>
+                <p>
+                    Track your favorite movies, discover new films, and find your next movie to watch.
+                </p>
 
-            {!isAuthenticated && (
-                <div className="auth-btns">
-                    <Link to="/login" className="login-btn">Log In</Link>
-                    <Link to="/signup" className="signup-btn">Sign Up</Link>
-                </div>
-            )}
-
+                {!isAuthenticated && (
+                    <div className="auth-btns">
+                        <Link to="/login" className="login-btn">Log In</Link>
+                        <Link to="/signup" className="signup-btn">Sign Up</Link>
+                    </div>
+                )}
+            </section>
+            
             {/* =========================
                 LOGGED IN
             ========================= */}
 
             {isAuthenticated && (
-                <>
+                <section className="home-section">
                     <section className="matchmaking">
 
                         <h2>Find Your Perfect Movie</h2>
 
-                        <form onSubmit={findMovies}>
+                        <p className="matchmaking-sub">Tell us what you're in the mood for and we'll recommend movies you'll love.</p>
+
+                        <form className="matchmaking-form" onSubmit={findMovies}>
 
                             {/* Favorite Movie */}
                             <label>
@@ -205,33 +216,19 @@ export default function HomePage() {
 
                                     <option value="Adventure">Adventure</option>
 
-                                    <option value="Comedy">
-                                        Comedy
-                                    </option>
+                                    <option value="Comedy">Comedy</option>
 
-                                    <option value="Drama">
-                                        Drama
-                                    </option>
+                                    <option value="Drama">Drama</option>
 
-                                    <option value="Fantasy">
-                                        Fantasy
-                                    </option>
+                                    <option value="Fantasy">Fantasy</option>
 
-                                    <option value="Horror">
-                                        Horror
-                                    </option>
+                                    <option value="Horror">Horror</option>
 
-                                    <option value="Romance">
-                                        Romance
-                                    </option>
+                                    <option value="Romance">Romance</option>
 
-                                    <option value="Science Fiction">
-                                        Science Fiction
-                                    </option>
+                                    <option value="Science Fiction">Science Fiction</option>
 
-                                    <option value="Thriller">
-                                        Thriller
-                                    </option>
+                                    <option value="Thriller">Thriller</option>
                                 </select>
                             </label>
 
@@ -240,30 +237,20 @@ export default function HomePage() {
                             <label>
                                 Movie Length
 
-                                <select
-                                    value={length}
-                                    onChange={(event) =>
+                                <select value={length} onChange={(event) =>
                                         setLength(
                                             event.target.value
                                         )
                                     }
                                     required
                                 >
-                                    <option value="">
-                                        Choose a length
-                                    </option>
+                                    <option value="">Choose a length</option>
 
-                                    <option value="short">
-                                        Short — under 100 minutes
-                                    </option>
+                                    <option value="short">Short — under 100 minutes</option>
 
-                                    <option value="medium">
-                                        Medium — 100–140 minutes
-                                    </option>
+                                    <option value="medium">Medium — 100–140 minutes</option>
 
-                                    <option value="long">
-                                        Long — over 140 minutes
-                                    </option>
+                                    <option value="long">Long — over 140 minutes</option>
                                 </select>
                             </label>
 
@@ -271,6 +258,7 @@ export default function HomePage() {
                             <button
                                 type="submit"
                                 disabled={matchLoading}
+                                className="matchmaking-btn"
                             >
                                 {matchLoading
                                     ? "Finding Movies..."
@@ -298,41 +286,30 @@ export default function HomePage() {
                             <div className="movie-grid">
 
                                 {matches.map((movie) => (
-                                    <div
-                                        className="movie-card"
+                                    <MovieCard
+                                        movie={movie}
                                         key={movie.id}
                                     >
-
-                                        {movie.poster_path ? (
-                                            <img
-                                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                                alt={movie.title}
-                                            />
-                                        ) : (
-                                            <div className="no-poster">
-                                                No Poster Available
-                                            </div>
-                                        )}
 
                                         <h3>{movie.title}</h3>
 
                                         <p>
                                             ⭐{" "}
-                                            {movie.vote_average?.toFixed(1)}
+                                            {movie.rating}
                                         </p>
 
                                         <p>
                                             {movie.runtime} minutes
                                         </p>
 
-                                    </div>
+                                    </MovieCard>
                                 ))}
 
                             </div>
 
                         </section>
                     )}
-                </>
+                </section>
             )}
 
             {/* LOGGED OUT */}
@@ -345,12 +322,11 @@ export default function HomePage() {
                         ) : (
                             <div className="movie-grid">
                                 {randomMovies.map((movie) => (
-                                    <div className="movie-card" key={movie.id}>
-                                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                                    <MovieCard movie={movie} key={movie.id}>
                                         <h3>{movie.title}</h3>
 
-                                        <p>⭐{movie.vote_average.toFixed(1)}</p>
-                                    </div>
+                                        <p>⭐{movie.rating}</p>
+                                    </MovieCard>
                                 ))}
                             </div>
                         )}
@@ -366,28 +342,14 @@ export default function HomePage() {
                 ) : (
                     <div className="movie-grid">
                         {topMovies.map((movie, index) => (
-                            <div className="movie-card" key={movie.id}>
-                                <p className="movie-rank">
-                                    #{index + 1}
-                                </p>
-
-                                {movie.poster_path ? (
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                        alt={movie.title}
-                                    />
-                                ) : (
-                                    <div className="no-poster">
-                                        No Poster Available
-                                    </div>
-                                )}
+                            <MovieCard key={movie.id} movie={movie} rank={index + 1}>
 
                                 <h3>{movie.title}</h3>
 
                                 <p>
-                                    ⭐ {movie.vote_average.toFixed(1)}
+                                    ⭐ {movie.rating}
                                 </p>
-                            </div>
+                            </MovieCard>
                         ))}
                     </div>
                 )}

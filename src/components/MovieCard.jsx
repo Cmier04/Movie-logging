@@ -2,13 +2,15 @@ import "../css/MovieCard.css";
 import "../css/index.css";
 import { Link } from "react-router-dom";
 
-function MovieCard({ movie }) {
+function MovieCard({ movie, rank }) {
     return (
         <article className="movie-card">
-            <a href={movie.url}>
+            {rank && (<p className="movie-rank">#{rank}</p>)}
+
+            <Link to={movie.url}>
                 {movie.image ? (
                     <img src={movie.image}
-                        alt={movie.title}
+                        alt={movie.alt}
                         className="movie-card-image"
                     />
                 ) : (
@@ -16,12 +18,12 @@ function MovieCard({ movie }) {
                         No Poster Available.
                     </div>
                 )}
-            </a>
+            </Link>
 
             <div className="movie-card-content">
                 <h3>{movie.title}</h3>
                 <p>{movie.rating}</p>
-                <p>Release: {movie.releaseDate}</p>
+                <p>Release Date: {movie.releaseDate}</p>
 
                 <Link to={movie.url} className="movie-card-details-btn">View Details</Link>
             </div>

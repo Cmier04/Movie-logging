@@ -71,7 +71,7 @@
 
 .movie-section h2 {
     font-size: 36px;
-    margin: 0 0 25px;
+    margin: 0 0 15px;
     text-align: center;
     font-family: var(--heading);
     font-weight: 500;
@@ -80,7 +80,6 @@
 .movie-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     box-sizing: border-box;
 }
@@ -91,27 +90,41 @@
     display: flex;
     gap: 20px;
     overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.movie-row .movie-card {
+  flex: 0 0 220px;
+  width: 220px;
 }
 
 .movie-card {
-    min-width: 0;
-    background-color: whitesmoke;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+  height: auto;
+  
+  
+  background-color: #e7d0fd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .movie-card-image {
     display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 2 / 3;
     object-fit: cover;
-    border-radius: 8px;
 }
 
 .movie-card-content {
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .movie-card h3 {
@@ -143,14 +156,14 @@
 .movie-card-details-btn {
     display: inline-block;
     padding: 8px 14px;
-    margin-top: 12px;
+    margin-top: auto;
 
     text-align: center;
     text-decoration: none;
     font-weight: 600;
 
-    background-color: #0d6efd;
-    color: white;
+    background-color: #7622fc;
+    color: rgb(226, 194, 252);
 
     border: 1px solid #0d6efd;
     border-radius: 6px;
@@ -189,5 +202,104 @@
 
   .movie-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/*-------------Home Page------------------*/
+.home-page {
+  width: 100%;
+  padding: 30px 40px 60px;
+  box-sizing: border-box;
+}
+
+.home-page h2 {
+  font-size: 36px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.home-logo {
+  display: block;
+  width: 350px;
+  height: auto;
+  margin: 20px auto;
+}
+
+.home-page .movie-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  justify-content: center;
+}
+
+/*-----------Matchmaking Form---------*/
+.matchmaking-card {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 2.5rem;
+
+  background: #ffff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+
+  text-align: left;
+}
+
+.matchmaking-card h2 {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.matchmaking-sub {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text);
+}
+
+.matchmaking-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.matchmaking-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.matchmaking-form input,
+.matchmaking-form select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.matchmaking-btn {
+  margin-top: 1rem;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.matchmaking-form button {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .matchmaking-form {
+    grid-template-columns: 1fr;
   }
 }

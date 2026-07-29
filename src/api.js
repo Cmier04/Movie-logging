@@ -40,6 +40,8 @@ function normalizeTmdbResults(results) {
             alt: `${movie.title} poster`,
             summary: movie.overview || "No summary is available.",
             rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
+            releaseDate: movie.release_date,
+            voteCount: movie.vote_count,
             url: `/details?source=tmdb&id=${movie.id}`
         };
     });
@@ -81,21 +83,21 @@ export const movieGenres = [
 export async function getRandomMovies() {
     const randomPage = Math.floor(Math.random() * 10) + 1;
 
-    const url = `${tmdbPopularUrl}?language=enUS&page=${randomPage}`;
+    const url = `${tmdbPopularUrl}?language=en-US&page=${randomPage}`;
     const data = await fetchTmdbJson(url);
 
     const shuffled = [...data.results].sort(
         () => Math.random() - 0.5
     );
 
-    return shuffled.slice(0, 5);
+    return normalizeTmdbResults(shuffled.slice(0, 5));
 }
 
 export async function getTopMovies() {
     const url = `${tmdbTopRatedUrl}?language=en-US&page=1`;
     const data = await fetchTmdbJson(url);
 
-    return data.results.slice(0, 10);
+    return normalizeTmdbResults(data.results.slice(0, 10));
 }
 
 export async function searchTmdb(query) {
@@ -133,10 +135,76 @@ export async function getNowPlayingMovies() {
     return normalizeTmdbResults(data.results || []);
 }
 
+export function formatRuntime(minutes) {
+    if (!minutes) {
+        return "Unknown";
+    }
+
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+        return `${remainingMinutes} min`;
+    }
+
+    return `${hours} hr ${remainingMinutes} min`;
+}
+
+export function formatDate(date) {
+    if (!date) {
+        return "Unknown";
+    }
+
+    const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    };
+    return new Date(date).toLocaleDateString("en-US", options);
+}
+
+function normalizeTmdbDetails(movie) {
+    return {
+        id: movie.id,
+        source: "TMDB",
+        title: movie.title,
+        image: movie.poster_path ? `${tmdbPosterBaseUrl}${movie.poster_path}` : "",
+
+        summary: movie.overview || "No summary available",
+        rating: movie.vote_average
+            ? movie.vote_average.toFixed(1)
+            : "N/A",
+        releaseDate: movie.release_date || "",
+        runtime: movie.runtime || 0,
+        genres: movie.genres || [],
+        url: `/details?source=tmdb&id=${movie.id}`
+    };
+}
+
 export async function fetchTmdbMovieDetails(movieId) {
     const data = await fetchTmdbJson(`${tmdbBaseUrl}/movie/${movieId}?language=en-US`);
 
-    return data;
+    return normalizeTmdbDetails(data);
+}
+
+export async function fetchTmdbCertification(movieId) {
+    const data = await fetchTmdbJson(
+        `${tmdbBaseUrl}/movie/${movieId}/release_dates`
+    );
+
+    const usRelease = data.results.find(
+        (country) => country.iso_3166_1 === "US"
+    );
+
+    if (!usRelease) {
+        return "NR";
+    }
+
+    const certification = usRelease.release_dates
+        .map((release) => release.certification)
+        .find((cert) => cert && cert.length > 0);    
+
+    return certification || "NR";
 }
 
 export async function getMovieRecommendations(movieId) {
@@ -148,7 +216,7 @@ export async function getMovieRecommendations(movieId) {
 
 export async function fetchTmdbMovieGenres() {
     const data = await fetchTmdbJson(`${tmdbGenreUrl}`);
-    return data.genres || [];
+    return normalizeTmdbResults(data.genres || []);
 }
 
 export async function getTopRatedGenreData() {

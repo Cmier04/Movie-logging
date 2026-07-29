@@ -7,6 +7,7 @@
 */
 
 import { useEffect, useState } from "react";
+import "../css/index.css";
 
 console.log("About Page");
 
@@ -16,7 +17,7 @@ export default function AboutPage() {
     return (
         <>
             <h1>About Us!</h1>
-            <section className="alert alert-info shadow-sm" role="alert">
+            <section className="about-site" role="alert">
                 <h2 className="h4 alert-heading">We are an online space for you to log your watched movies, look for recommendations, and search for movies.</h2>
                 <div>
                     

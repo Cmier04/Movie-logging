@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
+    fetchTmdbCertification,
     fetchTmdbMovieDetails,
     getTmdbMovieCredits,
     //getTmdbMovieReviews
+    formatRuntime,
+    formatDate
 } from "../api";
 import "../css/DetailsPage.css";
 
@@ -12,8 +15,9 @@ export default function DetailsPage() {
     const movieId = searchParams.get("id");
     const [movie, setMovie] = useState(null);
     const [credits, setCredits] = useState([]);
+    const [certification, setCertification] = useState("NR");
     const [showAllCast, setShowAllCast] = useState(false);
-    
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -26,14 +30,17 @@ export default function DetailsPage() {
             }
 
             try {
-                const [movieData, creditsData, reviewsData] = await Promise.all([
+                const [movieData, creditsData, certificationData] = await Promise.all([
                     fetchTmdbMovieDetails(movieId),
-                    getTmdbMovieCredits(movieId)
+                    getTmdbMovieCredits(movieId),
                     //getTmdbMovieReviews(movieId)
+                    fetchTmdbCertification(movieId)
                 ]);
                 setMovie(movieData);
                 setCredits(creditsData);
                 //setReviews(reviewsData);
+                setCertification(certificationData);
+
             } catch (error) {
                 console.error("Error loading movie details:", error);
                 setError("Unable to load movie details");
@@ -79,16 +86,7 @@ export default function DetailsPage() {
 
             <section className="movie-details">
                 <div className="details-poster">
-                    {movie.poster_path ? (
-                        <img 
-                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                            alt={`${movie.title} poster`}
-                        />
-                    ) : (
-                        <div className="details-poster-placeholder">
-                            No Poster Available.
-                        </div>
-                    )}
+                    <img src={movie.image} alt={movie.title} />
                 </div>
                 <div className="details-content">
                     <h1>{movie.title}</h1>
@@ -99,16 +97,16 @@ export default function DetailsPage() {
                         </p>
 
                         <p>
-                            <strong>Release Date: </strong>{movie.release_date || "Unknown"}
+                            <strong>Release Date: </strong>{formatDate(movie.releaseDate)}
                         </p>
                         <p>
-                            <strong>Vote Average: </strong>{movie.vote_average?.toFixed(1) || "N/A"}
+                            <strong>Age Rating: </strong>{certification || "NR"}
                         </p>
                         <p>
-                            <strong>Vote Count: </strong>{movie.vote_count?.toLocaleString() || "0"}
+                            <strong>Runtime: </strong>{formatRuntime(movie.runtime)}
                         </p>
                         <p>
-                            <strong>Rating: </strong>{movie.rating || "Unknown"}
+                            <strong>Vote Average: </strong>{movie.rating || "N/A"}
                         </p>
                         <p>
                             <strong>Favorite Count: </strong>
@@ -120,7 +118,7 @@ export default function DetailsPage() {
                         <h2>Overview</h2>
 
                         <p>
-                            {movie.overview || "No summary is available."}
+                            {movie.summary}
                         </p>
                     </div>
 
