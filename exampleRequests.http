@@ -1,0 +1,3 @@
+GET https://api.themoviedb.org/3/movie/557?api_key=YOUR_TMDB_API_KEY
+
+GET https://apilayer.net/api/check?access_key=YOUR_MAILBOXLAYER_API_KEY

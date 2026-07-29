@@ -1,16 +1,23 @@
-# React + Vite
+Welcome to The Movie Log!
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+What is the Movie Log?
+    This is a web app designed to allow users to search, view, and log/review movies for their own personal enjoyment.
 
-Currently, two official plugins are available:
+    *** THIS SITE IS STILL IN THE DEVELOPMENT STAGE *** 
+        No user data stored as no backend is present, some functions and features are still in developement
+    *** USE AT YOUR OWN RISK ***
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+How to Implement and launch?
+    1. Create Mailboxlayer, Auth0, and TMDB accounts
+    2. Create .env.local and requests.http files and store API keys
+    3. install npm and recharts, use npm run dev to view site locally
 
-## React Compiler
+API's & Documentation:
+    1. Mailboxlayer API
+        https://docs.apilayer.com/mailboxlayer/docs/api-documentation?utm_source=MailboxlayerHomePage&utm_medium=Referral
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+    2. Auth0 API
+        https://auth0.com/docs/api
+    
+    3. TMDB API
+        https://developer.themoviedb.org/docs/getting-started

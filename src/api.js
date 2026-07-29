@@ -230,6 +230,8 @@ export async function getTopRatedGenreData() {
 
     const genreCounts = {};
 
+    console.log(genreCounts);
+
     movieData.results?.forEach((movie) => {
         movie.genre_ids?.forEach((genreId) => {
             const genreName = genreMap[genreId];
