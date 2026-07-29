@@ -4,7 +4,9 @@
 This is a web app designed to allow users to search, view, and log/review movies for their own personal enjoyment.
 
 ** THIS SITE IS STILL IN THE DEVELOPMENT STAGE *** 
+    
     No user data stored as no backend is present, some functions and features are still in developement
+    
 ** USE AT YOUR OWN RISK ***
 
 ## How to Implement and launch?
