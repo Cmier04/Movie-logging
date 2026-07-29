@@ -1,5 +1,7 @@
 # Welcome to The Movie Log!
 
+![Logo] (/public/logo.png)
+
 ## What is the Movie Log?
 This is a web app designed to allow users to search, view, and log/review movies for their own personal enjoyment.
 
