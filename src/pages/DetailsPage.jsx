@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import useFavorites from "../hooks/useFavorites";
 import {
     fetchTmdbCertification,
     fetchTmdbMovieDetails,
@@ -17,6 +18,7 @@ export default function DetailsPage() {
     const [credits, setCredits] = useState([]);
     const [certification, setCertification] = useState("NR");
     const [showAllCast, setShowAllCast] = useState(false);
+    const { isFavorite, toggleFavorite } = useFavorites();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -122,7 +124,11 @@ export default function DetailsPage() {
                         </p>
                     </div>
 
-                    <button className="favorite-btn">♡ Add to Favorites</button>
+                    <button className="favorite-btn" onClick={() => toggleFavorite(movie.id)}>
+                        {isFavorite(movie.id)
+                            ? "♥ Remove from Favorites"
+                            : "♡ Add to Favorites"}
+                    </button>
                 </div>
             </section>
 

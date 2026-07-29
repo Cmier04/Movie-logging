@@ -2,7 +2,7 @@ import "../css/MovieCard.css";
 import "../css/index.css";
 import { Link } from "react-router-dom";
 
-function MovieCard({ movie, rank }) {
+function MovieCard({ movie, rank, favorite }) {
     return (
         <article className="movie-card">
             {rank && (<p className="movie-rank">#{rank}</p>)}
@@ -21,7 +21,9 @@ function MovieCard({ movie, rank }) {
             </Link>
 
             <div className="movie-card-content">
-                <h3>{movie.title}</h3>
+                <h3>{movie.title}
+                    {favorite && " ♥"}
+                </h3>
                 <p>{movie.rating}</p>
                 <p>Release Date: {movie.releaseDate}</p>
 

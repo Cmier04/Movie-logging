@@ -12,6 +12,7 @@ import {
         searchTmdb,
         getMovieRecommendations
     } from "../api.js";
+import useFavorites from "../hooks/useFavorites.js";
 
 export default function HomePage() {
     // Check if user is logged in
@@ -36,6 +37,8 @@ export default function HomePage() {
     const [matches, setMatches] = useState("");
     const [matchLoading, setMatchLoading] = useState(false);
     const [matchError, setMatchError] = useState("");
+    // Favorite Button
+    const { isFavorite } = useFavorites();
 
     // LOADING... Random and Top Movies
     useEffect(() => {
@@ -289,6 +292,7 @@ export default function HomePage() {
                                     <MovieCard
                                         movie={movie}
                                         key={movie.id}
+                                        favorite={isFavorite(movie.id)}
                                     >
 
                                         <h3>{movie.title}</h3>
@@ -322,7 +326,7 @@ export default function HomePage() {
                         ) : (
                             <div className="movie-grid">
                                 {randomMovies.map((movie) => (
-                                    <MovieCard movie={movie} key={movie.id}>
+                                    <MovieCard movie={movie} key={movie.id} favorite={isFavorite(movie.id)}>
                                         <h3>{movie.title}</h3>
 
                                         <p>⭐{movie.rating}</p>
@@ -342,7 +346,7 @@ export default function HomePage() {
                 ) : (
                     <div className="movie-grid">
                         {topMovies.map((movie, index) => (
-                            <MovieCard key={movie.id} movie={movie} rank={index + 1}>
+                            <MovieCard key={movie.id} movie={movie} rank={index + 1} favorite={isFavorite(movie.id)}>
 
                                 <h3>{movie.title}</h3>
 

@@ -7,19 +7,23 @@ import {
     searchTmdb 
     } from "../api";
 import MovieCard from "../components/MovieCard";
+import useFavorites from "../hooks/useFavorites";
 
-function MovieRow({ title, movies }) {
+function MovieRow({ title, movies, isFavorite }) {
     if (!movies || movies.length === 0) {
         return null;
     }
-
     return (
         <section className="movie-section">
             <h2>{title}</h2>
 
             <div className="movie-row">
                 {movies.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
+                    <MovieCard 
+                        key={movie.id} 
+                        movie={movie} 
+                        favorite={isFavorite(movie.id)}
+                    />
                 ))}
             </div>
         </section>
@@ -31,6 +35,7 @@ export default function SearchPage() {
     const [nowPlaying, setNowPlaying] = useState([]);
     const [genreMovies, setGenreMovies] = useState({});
     const [recommendedMovies, setRecommendedMovies] = useState([]);
+    const {isFavorite} = useFavorites();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -108,10 +113,10 @@ export default function SearchPage() {
                     )}
                 </section>
             )}
-            <MovieRow title="Now Playing" movies={nowPlaying}/>
+            <MovieRow title="Now Playing" movies={nowPlaying} isFavorite={isFavorite}/>
 
             {movieGenres.map((genre) => (
-                <MovieRow key={genre.id} title={`Top ${genre.name} Movies`} movies={genreMovies[genre.name]}/>
+                <MovieRow key={genre.id} title={`Top ${genre.name} Movies`} movies={genreMovies[genre.name]} isFavorite={isFavorite}/>
             ))}
         </main>
     );
