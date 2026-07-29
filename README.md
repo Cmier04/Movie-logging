@@ -1,15 +1,16 @@
 # Welcome to The Movie Log!
 
-![Logo] (/public/logo.png)
+![/public/logo.png](https://movie-logging.vercel.app/logo.png)
 
 ## What is the Movie Log?
 This is a web app designed to allow users to search, view, and log/review movies for their own personal enjoyment.
 
-#### ** THIS SITE IS STILL IN THE DEVELOPMENT STAGE ***
-- No user data stored as no backend is present, some functions and features are still in developement
-#### ** USE AT YOUR OWN RISK ***
 
 ## How to Implement and launch?
+
+> ### ⚠️ CAUTION: This site is still in the development stage
+> - No user data stored as no backend is present, some functions and features are still in developement
+
 1. Create Mailboxlayer, Auth0, and TMDB accounts
 
 2. Create `.env.local` and `requests.http` files and store API keys
@@ -34,3 +35,5 @@ This is a web app designed to allow users to search, view, and log/review movies
 3. TMDB API
 
     https://developer.themoviedb.org/docs/getting-started
+
+> ### 📝 Note: Things are subject to change
