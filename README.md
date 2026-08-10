@@ -37,3 +37,11 @@ This is a web app designed to allow users to search, view, and log/review movies
     https://developer.themoviedb.org/docs/getting-started
 
 > ### 📝 Note: Things are subject to change
+
+## Dev Notes:
+
+TODO:
+1. implement favorites
+2. find backend database for user profiles and data
+3. Create pages for actors/directors and allow people to follow
+4. Implement notification system for users to be notified when a new project is released by/with the people they follow

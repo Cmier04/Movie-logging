@@ -1,3 +1,10 @@
+/*TODO: 
+    1. add links to genres pages (displays all movies in that genre)
+    2. add links to directors and actors pages (small bio and works/roles), include follow button
+    3. implement favorites
+    4. implement reviews/threads
+*/
+
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import useFavorites from "../hooks/useFavorites";
@@ -6,6 +13,7 @@ import {
     fetchTmdbMovieDetails,
     getTmdbMovieCredits,
     //getTmdbMovieReviews
+    fetchTmdbMovieGenres,
     formatRuntime,
     formatDate
 } from "../api";
@@ -19,6 +27,7 @@ export default function DetailsPage() {
     const [certification, setCertification] = useState("NR");
     const [showAllCast, setShowAllCast] = useState(false);
     const { isFavorite, toggleFavorite } = useFavorites();
+    const [showAllCrew, setShowAllCrew] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -78,35 +87,38 @@ export default function DetailsPage() {
     const crew = credits?.crew || [];
 
     const directors = crew.filter( person => person.job === "Director");
-    const producors = crew.filter(person => person.job === "Producer");
+
     const leadCast = cast.slice(0, 5);
     const displayedCast = showAllCast ? cast : leadCast;
+
+    const leadCrew = crew.slice(0, 5);
+    const displayedCrew = showAllCrew
+        ? crew
+        : leadCrew;
 
     return (
         <main className="details-page">
             <Link to="/search" className="back-button">Back to Search</Link>
 
             <section className="movie-details">
-                <div className="details-poster">
-                    <img src={movie.image} alt={movie.title} />
-                </div>
-                <div className="details-content">
-                    <h1>{movie.title}</h1>
-                    <div className="movie-info">
-                        <p>
-                            <strong>Director: </strong>
-                            {directors.length > 0 ? directors.map(person => person.name).join(", ") : "Unknown"}
-                        </p>
 
-                        <p>
-                            <strong>Release Date: </strong>{formatDate(movie.releaseDate)}
-                        </p>
-                        <p>
-                            <strong>Age Rating: </strong>{certification || "NR"}
-                        </p>
-                        <p>
-                            <strong>Runtime: </strong>{formatRuntime(movie.runtime)}
-                        </p>
+                <aside className="movie-sidebar">
+                    <div className="details-poster">
+                        <img src={movie.image} alt={movie.title} />
+
+                        <button className={`favorite-btn ${isFavorite(movie.id) ? "is-favorite" : ""}`}
+                            onClick={() => toggleFavorite(movie.id)}
+                            aria-label= {
+                                isFavorite(movie.id)
+                                    ? "Remove from Favorites"
+                                    : "Add to Favorites"
+                            }
+                        >
+                           {isFavorite(movie.id) ? "♥" : "♡"}
+                        </button>
+                    </div>
+
+                    <div className="movie-stats">
                         <p>
                             <strong>Vote Average: </strong>{movie.rating || "N/A"}
                         </p>
@@ -114,32 +126,62 @@ export default function DetailsPage() {
                             <strong>Favorite Count: </strong>
                             0
                         </p>
+                        
+                        <div className="genres">
+                            {movie.genres?.map((genre) => (
+                                <span key={genre.id} className="genre-tag">
+                                    {genre.name}
+                                </span>
+                            ))}
+                        </div>
                     </div>
+                </aside>
 
+                <div className="movie-info">
+                    {/* TITLE + Movie Details */}
                     <div className="movie-overview">
-                        <h2>Overview</h2>
+                        <h1>{movie.title}</h1>
+                        <div className="movie-meta">
+                            <span>
+                                {directors.length > 0 
+                                ? directors.map(person => person.name).join(", ")
+                                : "Unknown"}
+                            </span>
 
-                        <p>
-                            {movie.summary}
-                        </p>
+                            <span>
+                                {formatDate(movie.releaseDate)}
+                            </span>
+
+                            <span>
+                                {certification || "NR"}
+                            </span>
+                            
+                            <span>
+                                {formatRuntime(movie.runtime)}
+                            </span>
+                        </div>
+
+                        <span className="overview-summary">
+                            <h2>Overview</h2>
+                            <p>
+                                {movie.summary}
+                            </p>
+                        </span>
                     </div>
-
-                    <button className="favorite-btn" onClick={() => toggleFavorite(movie.id)}>
-                        {isFavorite(movie.id)
-                            ? "♥ Remove from Favorites"
-                            : "♡ Add to Favorites"}
-                    </button>
                 </div>
             </section>
 
             <section className="cast-section">
                 <h2>Cast</h2>
-                <div className="class-list">
+
+                <div className="cast-list">
                     {displayedCast.map(person => (
                         <div className="cast-member" key={person.credit_id || person.id}>
                         
                         {person.profile_path ? (
-                            <img src={`https://image.tmdb.org/t/p/w185${person.profile_path}`} alt={person.name} />
+                            <img 
+                                src={`https://image.tmdb.org/t/p/w185${person.profile_path}`}
+                                alt={person.name} />
                         ) : (
                             <div className="cast-placeholder">No Photo available</div>
                         )}
@@ -157,6 +199,35 @@ export default function DetailsPage() {
                         {showAllCast ? "▲" : "▼"}
                     </button>
                     )}
+            </section>
+
+            <section className="crew-section">
+                <h2>Crew</h2>
+
+                <div className="crew-list">
+                    {displayedCrew.map(person => (
+                        <div className="crew-member" key={person.credit_id || person.id} >
+                            {person.profile_path ? (
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w185${person.profile_path}`}
+                                    alt={person.name}
+                                />
+                            ) : (
+                                <div className="crew-placeholder">
+                                    No Photo Available
+                                </div>
+                            )}
+                            <h3>{person.name}</h3>
+                            <p>{person.job || "Unknown role"}</p>
+                        </div>
+                    ))}
+                </div>
+
+                {crew.length > leadCrew.length && (
+                    <button className="crew-toggle-btn" onClick={() => setShowAllCrew(!showAllCrew)}>
+                        {showAllCrew ? "Show Main Crew" : "Show All Crew"}
+                    </button>
+                )}
             </section>
             
         </main>
